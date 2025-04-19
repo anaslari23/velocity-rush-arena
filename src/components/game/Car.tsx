@@ -170,23 +170,39 @@ const Car = ({ position, color = '#ff0000', isPlayer = false, onUpdate }: CarPro
         {/* Headlights */}
         <mesh position={[0.5, 0, 1.9]} rotation={[0, 0, 0]}>
           <cylinderGeometry args={[0.15, 0.15, 0.05, 16]} />
-          <meshStandardMaterial color="#ffffaa" emissive="#ffffaa" emissiveIntensity={1} />
+          <meshStandardMaterial 
+            color="#ffffaa" 
+            emissive="#ffffaa" 
+            emissiveIntensity={1} 
+          />
         </mesh>
         
         <mesh position={[-0.5, 0, 1.9]} rotation={[0, 0, 0]}>
           <cylinderGeometry args={[0.15, 0.15, 0.05, 16]} />
-          <meshStandardMaterial color="#ffffaa" emissive="#ffffaa" emissiveIntensity={1} />
+          <meshStandardMaterial 
+            color="#ffffaa" 
+            emissive="#ffffaa" 
+            emissiveIntensity={1} 
+          />
         </mesh>
         
         {/* Taillights */}
         <mesh position={[0.6, 0, -1.9]} rotation={[0, 0, 0]}>
           <boxGeometry args={[0.2, 0.1, 0.05]} />
-          <meshStandardMaterial color="#ff0000" emissive="#ff0000" emissiveIntensity={0.8} />
+          <meshStandardMaterial 
+            color="#ff0000" 
+            emissive="#ff0000" 
+            emissiveIntensity={0.8} 
+          />
         </mesh>
         
         <mesh position={[-0.6, 0, -1.9]} rotation={[0, 0, 0]}>
           <boxGeometry args={[0.2, 0.1, 0.05]} />
-          <meshStandardMaterial color="#ff0000" emissive="#ff0000" emissiveIntensity={0.8} />
+          <meshStandardMaterial 
+            color="#ff0000" 
+            emissive="#ff0000" 
+            emissiveIntensity={0.8} 
+          />
         </mesh>
       </mesh>
       
@@ -216,12 +232,20 @@ const Car = ({ position, color = '#ff0000', isPlayer = false, onUpdate }: CarPro
         <>
           <mesh position={[0.4, 0, -2]} rotation={[0, 0, 0]}>
             <coneGeometry args={[0.1, 0.5, 8]} />
-            <meshStandardMaterial color="#00aaff" emissive="#00ffff" emissiveIntensity={2} />
+            <meshStandardMaterial 
+              color="#00aaff" 
+              emissive="#00ffff" 
+              emissiveIntensity={2} 
+            />
           </mesh>
           
           <mesh position={[-0.4, 0, -2]} rotation={[0, 0, 0]}>
             <coneGeometry args={[0.1, 0.5, 8]} />
-            <meshStandardMaterial color="#00aaff" emissive="#00ffff" emissiveIntensity={2} />
+            <meshStandardMaterial 
+              color="#00aaff" 
+              emissive="#00ffff" 
+              emissiveIntensity={2} 
+            />
           </mesh>
         </>
       )}

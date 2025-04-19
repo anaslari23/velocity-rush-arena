@@ -162,7 +162,9 @@ const GameUI: React.FC<GameUIProps> = ({
       {/* Nitro bar */}
       <div className="absolute bottom-8 left-8 w-48">
         <div className="mb-1 text-xs text-neon-blue neon-text">NITRO</div>
-        <Progress value={nitroAmount} className="h-3 bg-gray-800" indicatorClassName="bg-neon-blue" />
+        <Progress value={nitroAmount} className="h-3 bg-gray-800">
+          <div className="h-full bg-neon-blue" style={{ width: `${nitroAmount}%` }} />
+        </Progress>
       </div>
       
       {/* Pause button */}

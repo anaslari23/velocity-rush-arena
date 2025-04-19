@@ -91,7 +91,11 @@ const RaceTrack: React.FC<RaceTrackProps> = ({ onCheckpointReached }) => {
           {/* Visual indicator for checkpoint */}
           <mesh>
             <boxGeometry args={[trackWidth, 3, 0.5]} />
-            <meshStandardMaterial color="#00ff66" transparent opacity={0.3} />
+            <meshStandardMaterial 
+              color="#00ff66" 
+              transparent 
+              opacity={0.3} 
+            />
           </mesh>
           
           {/* Trigger collider would be added here in a more complex implementation */}

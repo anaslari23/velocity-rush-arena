@@ -2,7 +2,7 @@
 import React, { useRef, useState, useEffect } from 'react';
 import { Canvas } from '@react-three/fiber';
 import { Physics } from '@react-three/cannon';
-import { Stats, OrbitControls, PerspectiveCamera, Sky } from '@react-three/drei';
+import { Stats, PerspectiveCamera, Sky } from '@react-three/drei';
 import Car from './Car';
 import RaceTrack from './RaceTrack';
 import GameUI from './GameUI';
@@ -213,7 +213,6 @@ const GameManager: React.FC = () => {
         
         {/* Development helpers - remove in production */}
         {process.env.NODE_ENV === 'development' && <Stats />}
-        {/* <OrbitControls /> */}
       </Canvas>
       
       {/* Game UI overlay */}
