@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { usePlane } from '@react-three/cannon';
 import * as THREE from 'three';
@@ -8,11 +7,11 @@ interface RaceTrackProps {
 }
 
 const RaceTrack: React.FC<RaceTrackProps> = ({ onCheckpointReached }) => {
-  // Ground plane
+  // Ground plane with better friction
   const [planeRef] = usePlane(() => ({
     rotation: [-Math.PI / 2, 0, 0],
     position: [0, 0, 0],
-    material: { friction: 0.1 }
+    material: { friction: 0.5, restitution: 0.3 }
   }));
 
   // Track layout data
@@ -34,13 +33,13 @@ const RaceTrack: React.FC<RaceTrackProps> = ({ onCheckpointReached }) => {
 
   return (
     <group>
-      {/* Main ground */}
+      {/* Main ground with texture */}
       <mesh ref={planeRef as any} receiveShadow>
         <planeGeometry args={[1000, 1000]} />
-        <meshStandardMaterial color="#1a1a2e" />
+        <meshStandardMaterial color="#0a0a1e" />
       </mesh>
 
-      {/* Track segments */}
+      {/* Track segments with improved textures */}
       {trackSegments.map((segment, index) => {
         const start = segment.start;
         const end = segment.end;
@@ -60,33 +59,78 @@ const RaceTrack: React.FC<RaceTrackProps> = ({ onCheckpointReached }) => {
         
         return (
           <group key={index}>
-            {/* Road segment */}
+            {/* Road segment with better texture */}
             <mesh position={[midX, 0.01, midZ]} rotation={[0, angle, 0]} receiveShadow>
               <boxGeometry args={[width, 0.1, length]} />
-              <meshStandardMaterial color="#16213e" />
+              <meshStandardMaterial 
+                color="#16213e" 
+                roughness={0.6}
+              />
             </mesh>
             
-            {/* Road markings */}
-            <mesh position={[midX, 0.02, midZ]} rotation={[0, angle, 0]} receiveShadow>
-              <boxGeometry args={[0.5, 0.02, length * 0.8]} />
+            {/* Dashed road markings */}
+            {Array.from({ length: Math.floor(length / 5) }).map((_, i) => (
+              <mesh 
+                key={`marking-${index}-${i}`} 
+                position={[
+                  midX,
+                  0.02,
+                  midZ - length/2 + i * 5 + 2.5
+                ]} 
+                rotation={[0, angle, 0]} 
+                receiveShadow
+              >
+                <boxGeometry args={[0.5, 0.03, 2]} />
+                <meshStandardMaterial color="#e2e2e2" />
+              </mesh>
+            ))}
+            
+            {/* Road edge with guard rails */}
+            <mesh position={[midX + width / 2, 0.2, midZ]} rotation={[0, angle, 0]} receiveShadow>
+              <boxGeometry args={[0.5, 0.4, length]} />
               <meshStandardMaterial color="#e2e2e2" />
             </mesh>
             
-            {/* Road edge */}
-            <mesh position={[midX + width / 2, 0.1, midZ]} rotation={[0, angle, 0]} receiveShadow>
-              <boxGeometry args={[0.5, 0.2, length]} />
+            <mesh position={[midX - width / 2, 0.2, midZ]} rotation={[0, angle, 0]} receiveShadow>
+              <boxGeometry args={[0.5, 0.4, length]} />
               <meshStandardMaterial color="#e2e2e2" />
             </mesh>
             
-            <mesh position={[midX - width / 2, 0.1, midZ]} rotation={[0, angle, 0]} receiveShadow>
-              <boxGeometry args={[0.5, 0.2, length]} />
-              <meshStandardMaterial color="#e2e2e2" />
-            </mesh>
+            {/* Guard rail posts */}
+            {Array.from({ length: Math.floor(length / 10) + 1 }).map((_, i) => (
+              <React.Fragment key={`rail-${index}-${i}`}>
+                <mesh 
+                  position={[
+                    midX + width / 2,
+                    0.6,
+                    midZ - length/2 + i * 10
+                  ]} 
+                  rotation={[0, angle, 0]} 
+                  castShadow
+                >
+                  <boxGeometry args={[0.2, 0.8, 0.2]} />
+                  <meshStandardMaterial color="#777777" />
+                </mesh>
+                
+                <mesh 
+                  position={[
+                    midX - width / 2,
+                    0.6,
+                    midZ - length/2 + i * 10
+                  ]} 
+                  rotation={[0, angle, 0]} 
+                  castShadow
+                >
+                  <boxGeometry args={[0.2, 0.8, 0.2]} />
+                  <meshStandardMaterial color="#777777" />
+                </mesh>
+              </React.Fragment>
+            ))}
           </group>
         );
       })}
       
-      {/* Checkpoints */}
+      {/* Checkpoints with better visibility */}
       {checkpoints.map((checkpoint) => (
         <group 
           key={checkpoint.id} 
@@ -95,34 +139,74 @@ const RaceTrack: React.FC<RaceTrackProps> = ({ onCheckpointReached }) => {
         >
           {/* Visual indicator for checkpoint */}
           <mesh>
-            <boxGeometry args={[trackWidth, 3, 0.5]} />
+            <boxGeometry args={[trackWidth, 3, 0.2]} />
             <meshStandardMaterial 
               color="#00ff66" 
               transparent 
               opacity={0.3} 
+              emissive="#00ff88"
+              emissiveIntensity={0.5}
             />
           </mesh>
           
-          {/* Trigger collider would be added here in a more complex implementation */}
+          {/* Checkpoint markers */}
+          <mesh position={[trackWidth/2 - 1, 0, 0]} castShadow>
+            <cylinderGeometry args={[0.3, 0.5, 4, 8]} />
+            <meshStandardMaterial color="#00ff88" emissive="#00ff88" emissiveIntensity={0.3} />
+          </mesh>
+          
+          <mesh position={[-trackWidth/2 + 1, 0, 0]} castShadow>
+            <cylinderGeometry args={[0.3, 0.5, 4, 8]} />
+            <meshStandardMaterial color="#00ff88" emissive="#00ff88" emissiveIntensity={0.3} />
+          </mesh>
         </group>
       ))}
       
       {/* Environment obstacles and decorations */}
       <group position={[20, 0, -30]}>
-        <mesh position={[0, 1, 0]} castShadow>
-          <boxGeometry args={[4, 2, 4]} />
-          <meshStandardMaterial color="#444" />
+        <mesh position={[0, 1.5, 0]} castShadow>
+          <boxGeometry args={[4, 3, 4]} />
+          <meshStandardMaterial color="#444" roughness={0.6} />
         </mesh>
       </group>
 
       <group position={[-20, 0, -60]}>
         <mesh position={[0, 3, 0]} castShadow>
           <cylinderGeometry args={[2, 2, 6, 16]} />
-          <meshStandardMaterial color="#345" />
+          <meshStandardMaterial color="#345" roughness={0.7} />
         </mesh>
       </group>
       
-      {/* Stadium/Arena */}
+      {/* Add some trees and decorations */}
+      {Array.from({ length: 20 }).map((_, i) => {
+        const x = (Math.random() - 0.5) * 150;
+        const z = (Math.random() - 0.5) * 150;
+        // Keep trees away from the track
+        const distToTrack = Math.min(
+          Math.abs(x), 
+          Math.abs(z), 
+          Math.abs(x - 100), 
+          Math.abs(z + 100)
+        );
+        if (distToTrack < 20) return null;
+        
+        return (
+          <group key={`tree-${i}`} position={[x, 0, z]}>
+            {/* Tree trunk */}
+            <mesh position={[0, 2, 0]} castShadow>
+              <cylinderGeometry args={[0.5, 0.8, 4, 8]} />
+              <meshStandardMaterial color="#5D4037" />
+            </mesh>
+            {/* Tree top */}
+            <mesh position={[0, 5, 0]} castShadow>
+              <coneGeometry args={[2, 6, 8]} />
+              <meshStandardMaterial color="#2E7D32" />
+            </mesh>
+          </group>
+        );
+      })}
+      
+      {/* Stadium/Arena with additional detail */}
       <group position={[50, 0, -50]}>
         {/* Stadium stands in a circular pattern */}
         {Array.from({ length: 20 }).map((_, i) => {
@@ -131,10 +215,26 @@ const RaceTrack: React.FC<RaceTrackProps> = ({ onCheckpointReached }) => {
           const x = Math.sin(angle) * radius;
           const z = Math.cos(angle) * radius;
           return (
-            <mesh key={i} position={[x, 5, z]} rotation={[0, -angle, 0]} castShadow>
-              <boxGeometry args={[10, 10, 3]} />
-              <meshStandardMaterial color="#334455" />
-            </mesh>
+            <group key={i}>
+              <mesh position={[x, 5, z]} rotation={[0, -angle, 0]} castShadow>
+                <boxGeometry args={[10, 10, 3]} />
+                <meshStandardMaterial color="#334455" />
+              </mesh>
+              {/* Stadium lights */}
+              {i % 5 === 0 && (
+                <mesh position={[x, 15, z]} castShadow>
+                  <cylinderGeometry args={[0.5, 0.5, 5, 8]} />
+                  <meshStandardMaterial color="#555555" />
+                  <pointLight 
+                    position={[0, 0, 0]} 
+                    intensity={10} 
+                    distance={60}
+                    color="#ffffff"
+                    castShadow
+                  />
+                </mesh>
+              )}
+            </group>
           );
         })}
       </group>

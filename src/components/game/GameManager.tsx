@@ -1,4 +1,3 @@
-
 import React, { useRef, useState, useEffect } from 'react';
 import { Canvas } from '@react-three/fiber';
 import { Physics } from '@react-three/cannon';
@@ -31,8 +30,9 @@ const GameManager: React.FC = () => {
   const gameLoopRef = useRef<number>();
   const lastTimeRef = useRef<number>(0);
   const cameraRef = useRef<THREE.PerspectiveCamera>(null);
+  const cameraPosRef = useRef<THREE.Vector3>(new THREE.Vector3(0, 4, 10));
+  const cameraTargetRef = useRef<THREE.Vector3>(new THREE.Vector3());
   
-  // Handle game loop
   useEffect(() => {
     if (!isGameStarted || isPaused) return;
     
@@ -44,10 +44,8 @@ const GameManager: React.FC = () => {
       const deltaTime = time - lastTimeRef.current;
       lastTimeRef.current = time;
       
-      // Update race time
       setRaceTime(prevTime => prevTime + deltaTime);
       
-      // Update game state
       updateGameState(deltaTime);
       
       gameLoopRef.current = requestAnimationFrame(gameLoop);
@@ -61,18 +59,13 @@ const GameManager: React.FC = () => {
   }, [isGameStarted, isPaused]);
   
   const updateGameState = (deltaTime: number) => {
-    // Update race position based on checkpoints and time
-    // For a simple implementation, we'll just update it randomly once in a while
     if (Math.random() < 0.002) {
       const newPosition = Math.max(1, Math.min(totalRacers, racePosition + (Math.random() > 0.5 ? 1 : -1)));
       setRacePosition(newPosition);
     }
     
-    // Check if player has completed a lap
-    // This would normally be based on crossing checkpoints in order
     const checkpointCount = checkpoints.length;
     if (checkpointCount >= 4) {
-      // Reset checkpoints for next lap
       setCheckpoints([]);
       
       if (currentLap < totalLaps) {
@@ -82,7 +75,6 @@ const GameManager: React.FC = () => {
           description: `Time: ${formatTime(raceTime)}`,
         });
       } else {
-        // Race finished
         setIsPaused(true);
         toast({
           title: 'Race Completed!',
@@ -105,16 +97,31 @@ const GameManager: React.FC = () => {
     setPlayerPosition(position);
     setPlayerSpeed(speed);
     
-    // Update nitro amount (this would normally be managed by the Car component)
-    // Here we're just setting it to a random value for demonstration
     setNitroAmount(prevNitro => {
       const newNitro = prevNitro + (Math.random() > 0.8 ? 1 : -0.5);
       return Math.max(0, Math.min(100, newNitro));
     });
     
-    // Update camera position
     if (cameraRef.current) {
-      // Camera following logic would go here
+      const carDir = new THREE.Vector3(
+        Math.sin(cameraRef.current.rotation.y),
+        0,
+        Math.cos(cameraRef.current.rotation.y)
+      ).normalize();
+      
+      const idealOffset = new THREE.Vector3(
+        position[0] - carDir.x * 7,
+        position[1] + 3 + speed * 0.05,
+        position[2] - carDir.z * 7
+      );
+      
+      cameraPosRef.current.lerp(idealOffset, 0.05);
+      
+      cameraRef.current.position.copy(cameraPosRef.current);
+      
+      const targetPos = new THREE.Vector3(position[0], position[1], position[2]);
+      cameraTargetRef.current.lerp(targetPos, 0.1);
+      cameraRef.current.lookAt(cameraTargetRef.current);
     }
   };
   
@@ -136,7 +143,7 @@ const GameManager: React.FC = () => {
   
   const handleResumeGame = () => {
     setIsPaused(false);
-    lastTimeRef.current = 0; // Reset last time to avoid large delta
+    lastTimeRef.current = 0;
   };
   
   const handleRestartGame = () => {
@@ -156,7 +163,6 @@ const GameManager: React.FC = () => {
     setRacePosition(1);
     lastTimeRef.current = 0;
     
-    // Reset player position
     setPlayerPosition([0, 1, 0]);
     setPlayerSpeed(0);
     setNitroAmount(100);
@@ -167,9 +173,8 @@ const GameManager: React.FC = () => {
       <Canvas shadows>
         <Physics 
           gravity={[0, -30, 0]} 
-          defaultContactMaterial={{ friction: 0.1, restitution: 0.1 }}
+          defaultContactMaterial={{ friction: 0.5, restitution: 0.3 }}
         >
-          {/* Camera */}
           <PerspectiveCamera 
             ref={cameraRef} 
             makeDefault 
@@ -177,7 +182,6 @@ const GameManager: React.FC = () => {
             fov={75} 
           />
           
-          {/* Lighting */}
           <ambientLight intensity={0.5} />
           <directionalLight 
             position={[10, 10, 5]} 
@@ -187,13 +191,10 @@ const GameManager: React.FC = () => {
             shadow-mapSize-height={2048}
           />
           
-          {/* Sky */}
           <Sky sunPosition={[100, 100, 20]} />
           
-          {/* Track */}
           <RaceTrack onCheckpointReached={handleCheckpointReached} />
           
-          {/* Player Car */}
           <Car 
             position={playerPosition} 
             color="#ff0066" 
@@ -201,7 +202,6 @@ const GameManager: React.FC = () => {
             onUpdate={handlePlayerUpdate} 
           />
           
-          {/* AI Cars */}
           {aiCars.map((car, index) => (
             <Car 
               key={index} 
@@ -212,11 +212,9 @@ const GameManager: React.FC = () => {
           ))}
         </Physics>
         
-        {/* Development helpers - remove in production */}
         {process.env.NODE_ENV === 'development' && <Stats />}
       </Canvas>
       
-      {/* Game UI overlay */}
       <GameUI 
         speed={playerSpeed}
         nitroAmount={nitroAmount}
