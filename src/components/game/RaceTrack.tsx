@@ -1,6 +1,7 @@
 
 import React from 'react';
 import { usePlane } from '@react-three/cannon';
+import * as THREE from 'three';
 
 interface RaceTrackProps {
   onCheckpointReached?: (checkpointId: number) => void;
@@ -34,7 +35,7 @@ const RaceTrack: React.FC<RaceTrackProps> = ({ onCheckpointReached }) => {
   return (
     <group>
       {/* Main ground */}
-      <mesh ref={planeRef} receiveShadow>
+      <mesh ref={planeRef as any} receiveShadow>
         <planeGeometry args={[1000, 1000]} />
         <meshStandardMaterial color="#1a1a2e" />
       </mesh>
@@ -87,7 +88,11 @@ const RaceTrack: React.FC<RaceTrackProps> = ({ onCheckpointReached }) => {
       
       {/* Checkpoints */}
       {checkpoints.map((checkpoint) => (
-        <group key={checkpoint.id} position={checkpoint.position} rotation={checkpoint.rotation}>
+        <group 
+          key={checkpoint.id} 
+          position={checkpoint.position as [number, number, number]} 
+          rotation={checkpoint.rotation as [number, number, number]}
+        >
           {/* Visual indicator for checkpoint */}
           <mesh>
             <boxGeometry args={[trackWidth, 3, 0.5]} />

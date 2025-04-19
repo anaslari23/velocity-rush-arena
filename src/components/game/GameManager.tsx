@@ -7,6 +7,7 @@ import Car from './Car';
 import RaceTrack from './RaceTrack';
 import GameUI from './GameUI';
 import { useToast } from '@/components/ui/use-toast';
+import * as THREE from 'three';
 
 const GameManager: React.FC = () => {
   const [isGameStarted, setIsGameStarted] = useState(false);

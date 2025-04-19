@@ -3,6 +3,7 @@ import React, { useRef } from 'react';
 import { useFrame } from '@react-three/fiber';
 import { useBox, useCylinder } from '@react-three/cannon';
 import { useKeyboardControls } from './useKeyboardControls';
+import * as THREE from 'three';
 
 interface CarProps {
   position: [number, number, number];
@@ -140,7 +141,11 @@ const Car = ({ position, color = '#ff0000', isPlayer = false, onUpdate }: CarPro
     
     // Get current position
     const position: [number, number, number] = [0, 0, 0];
-    chassisRef.current.getWorldPosition({ x: position[0], y: position[1], z: position[2] });
+    const worldPos = new THREE.Vector3();
+    chassisRef.current.getWorldPosition(worldPos);
+    position[0] = worldPos.x;
+    position[1] = worldPos.y;
+    position[2] = worldPos.z;
     
     // Update callback
     if (isPlayer && onUpdate) {
@@ -150,7 +155,7 @@ const Car = ({ position, color = '#ff0000', isPlayer = false, onUpdate }: CarPro
 
   return (
     <group>
-      <mesh ref={chassisRef} castShadow>
+      <mesh ref={chassisRef as any} castShadow>
         {/* Car body */}
         <boxGeometry args={[1.7, 0.6, 4]} />
         <meshStandardMaterial color={color} />
@@ -207,22 +212,22 @@ const Car = ({ position, color = '#ff0000', isPlayer = false, onUpdate }: CarPro
       </mesh>
       
       {/* Wheels */}
-      <mesh ref={flWheelRef} castShadow>
+      <mesh ref={flWheelRef as any} castShadow>
         <cylinderGeometry args={[wheelRadius, wheelRadius, wheelThickness, 16]} />
         <meshStandardMaterial color="#222222" />
       </mesh>
       
-      <mesh ref={frWheelRef} castShadow>
+      <mesh ref={frWheelRef as any} castShadow>
         <cylinderGeometry args={[wheelRadius, wheelRadius, wheelThickness, 16]} />
         <meshStandardMaterial color="#222222" />
       </mesh>
       
-      <mesh ref={blWheelRef} castShadow>
+      <mesh ref={blWheelRef as any} castShadow>
         <cylinderGeometry args={[wheelRadius, wheelRadius, wheelThickness, 16]} />
         <meshStandardMaterial color="#222222" />
       </mesh>
       
-      <mesh ref={brWheelRef} castShadow>
+      <mesh ref={brWheelRef as any} castShadow>
         <cylinderGeometry args={[wheelRadius, wheelRadius, wheelThickness, 16]} />
         <meshStandardMaterial color="#222222" />
       </mesh>
