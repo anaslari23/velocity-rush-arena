@@ -1,7 +1,7 @@
 
 import { useEffect, useState } from 'react';
 
-interface Controls {
+export interface Controls {
   forward: boolean;
   back: boolean;
   left: boolean;

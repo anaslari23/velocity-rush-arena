@@ -1,73 +1,82 @@
-# Welcome to your Lovable project
+# Velocity Rush Arena
 
-## Project info
+A high-speed arcade racing game with customizable cars and dynamic environments.
 
-**URL**: https://lovable.dev/projects/61c5322d-fcae-4189-9fa6-761b72691e53
+## Features
 
-## How can I edit this code?
+- Multiple sports cars with unique stats (speed, acceleration, handling)
+- Car customization system (paint, wheels, spoilers)
+- Dynamic racing environments (urban, highway, desert, snow, beach)
+- Weather effects (rain, fog, night mode)
+- Realistic physics with drifting mechanics, nitro boost, and collision reactions
+- AI-controlled opponents with difficulty levels
+- Sound effects and background soundtrack
+- Scoreboard, race timer, laps, and rewards system
+- Mobile-friendly controls (touch steering, tilt controls)
 
-There are several ways of editing your application.
+## Setup Instructions
 
-**Use Lovable**
+1. Install dependencies:
+   ```
+   npm install
+   ```
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/61c5322d-fcae-4189-9fa6-761b72691e53) and start prompting.
+2. Start the development server:
+   ```
+   npm run dev
+   ```
 
-Changes made via Lovable will be committed automatically to this repo.
+3. Open your browser and navigate to:
+   ```
+   http://localhost:5173
+   ```
 
-**Use your preferred IDE**
+## Project Structure
 
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
+- `/src/components/game` - Game mechanics and 3D rendering
+- `/src/components/garage` - Car selection and customization
+- `/src/components/menu` - Main menu and navigation
+- `/src/components/settings` - Game settings
+- `/src/components/ui` - Reusable UI components
 
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
+## Controls
 
-Follow these steps:
+### Keyboard
+- W/Up Arrow: Accelerate
+- S/Down Arrow: Brake/Reverse
+- A/D or Left/Right Arrows: Steer
+- Shift: Drift
+- Space: Nitro Boost
+- R: Reset car position
 
-```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
+### Touch Controls
+- Left side of screen: Virtual joystick for steering
+- Right side of screen: Buttons for acceleration, braking, drift, and nitro
 
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
+### Tilt Controls
+- Tilt device left/right to steer
+- On-screen buttons for acceleration, braking, drift, and nitro
 
-# Step 3: Install the necessary dependencies.
-npm i
+## Game Progression
 
-# Step 4: Start the development server with auto-reloading and an instant preview.
-npm run dev
-```
+- Win races to earn coins and XP
+- Use coins to unlock new cars and customization options
+- Level up to access more challenging tracks and environments
 
-**Edit a file directly in GitHub**
-
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
-
-**Use GitHub Codespaces**
-
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
-
-## What technologies are used for this project?
+## Development
 
 This project is built with:
-
-- Vite
-- TypeScript
 - React
-- shadcn-ui
+- TypeScript
+- Three.js (via React Three Fiber)
 - Tailwind CSS
+- Vite
 
-## How can I deploy this project?
+## Building for Production
 
-Simply open [Lovable](https://lovable.dev/projects/61c5322d-fcae-4189-9fa6-761b72691e53) and click on Share -> Publish.
+To create a production build:
+```
+npm run build
+```
 
-## Can I connect a custom domain to my Lovable project?
-
-Yes, you can!
-
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
-
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/tips-tricks/custom-domain#step-by-step-guide)
+The build artifacts will be stored in the `dist/` directory.

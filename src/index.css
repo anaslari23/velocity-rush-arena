@@ -34,6 +34,12 @@
     --ring: 224.3 76.3% 48%;
     
     --radius: 0.5rem;
+    
+    /* Neon colors */
+    --neon-blue: #00f3ff;
+    --neon-pink: #ff00aa;
+    --neon-green: #00ff66;
+    --neon-yellow: #ffcc00;
   }
 }
 
@@ -97,4 +103,132 @@
   .neon-border {
     box-shadow: 0 0 15px currentColor;
   }
+}
+
+/* Add to existing styles */
+
+.speedlines-container {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  perspective: 100px;
+  z-index: 10;
+}
+
+.speedline {
+  position: absolute;
+  width: 2px;
+  height: 100vh;
+  background: linear-gradient(to bottom, transparent, rgba(255, 255, 255, 0.4), transparent);
+  animation: speedline 0.5s linear infinite;
+}
+
+@keyframes speedline {
+  from {
+    transform: translateY(-100%) translateZ(0);
+  }
+  to {
+    transform: translateY(100%) translateZ(50px);
+  }
+}
+
+.game-ui {
+  pointer-events: none;
+  user-select: none;
+}
+
+.game-ui button {
+  pointer-events: auto;
+}
+
+.nitro-effect {
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(to top, rgba(0, 243, 255, 0.2), transparent);
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+.nitro-effect.active {
+  opacity: 1;
+}
+
+/* Weather effects */
+.rain-container {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.raindrop {
+  position: absolute;
+  top: -20px;
+  width: 1px;
+  height: 20px;
+  background: linear-gradient(to bottom, transparent, rgba(255, 255, 255, 0.7));
+  animation: raindrop 1s linear infinite;
+}
+
+@keyframes raindrop {
+  0% {
+    transform: translateY(-20px) rotate(20deg);
+  }
+  100% {
+    transform: translateY(100vh) rotate(20deg);
+  }
+}
+
+.snow-container {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.snowflake {
+  position: absolute;
+  top: -10px;
+  width: 6px;
+  height: 6px;
+  background-color: rgba(255, 255, 255, 0.8);
+  border-radius: 50%;
+  animation: snowfall 5s linear infinite;
+}
+
+@keyframes snowfall {
+  0% {
+    transform: translateY(-10px) translateX(0) rotate(0deg);
+  }
+  25% {
+    transform: translateY(25vh) translateX(10px) rotate(90deg);
+  }
+  50% {
+    transform: translateY(50vh) translateX(-10px) rotate(180deg);
+  }
+  75% {
+    transform: translateY(75vh) translateX(10px) rotate(270deg);
+  }
+  100% {
+    transform: translateY(100vh) translateX(0) rotate(360deg);
+  }
+}
+
+.fog-overlay {
+  position: absolute;
+  inset: 0;
+  background-color: rgba(200, 200, 220, 0.3);
+  backdrop-filter: blur(4px);
+  pointer-events: none;
+}
+
+.night-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to bottom, rgba(0, 0, 30, 0.5), rgba(0, 0, 30, 0.7));
+  pointer-events: none;
 }
