@@ -1,9 +1,9 @@
 
 import React, { useEffect, useState } from 'react';
-import { Button } from '@/components/ui/button';
-import { Card } from '@/components/ui/card';
-import { Progress } from '@/components/ui/progress';
-import { useToast } from '@/components/ui/use-toast';
+import { Button } from '../ui/button';
+import { Card } from '../ui/card';
+import { Progress } from '../ui/progress';
+import { useToast } from '../ui/use-toast';
 import { Environment } from './types';
 
 // Mini-map component
@@ -50,7 +50,7 @@ const MiniMap: React.FC<MiniMapProps> = ({ position, checkpoints, environment })
       {checkpoints.map((checkpoint, index) => (
         <div 
           key={index}
-          className="absolute w-3 h-3 bg-neon-green rounded-full transform -translate-x-1/2 -translate-y-1/2"
+          className="absolute w-3 h-3 bg-green-500 rounded-full transform -translate-x-1/2 -translate-y-1/2"
           style={{
             left: `${((index * 30 + 50) / 300) * 100}%`,
             top: `${((index * 30 + 50) / 300) * 100}%`,
@@ -61,7 +61,7 @@ const MiniMap: React.FC<MiniMapProps> = ({ position, checkpoints, environment })
       
       {/* Player position */}
       <div 
-        className="absolute w-3 h-3 bg-neon-blue rounded-full transform -translate-x-1/2 -translate-y-1/2 z-10"
+        className="absolute w-3 h-3 bg-blue-500 rounded-full transform -translate-x-1/2 -translate-y-1/2 z-10"
         style={{
           left: `${((position[0] + 150) / 300) * 100}%`,
           top: `${((position[2] + 150) / 300) * 100}%`,
@@ -166,9 +166,9 @@ const RaceResults: React.FC<RaceResultsProps> = ({
   
   return (
     <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-80">
-      <Card className="w-full max-w-md p-8 bg-black border border-neon-blue text-white">
+      <Card className="w-full max-w-md p-8 bg-black border border-blue-500 text-white">
         <div className="text-center">
-          <h2 className="text-4xl font-bold mb-2 text-neon-blue neon-text">
+          <h2 className="text-4xl font-bold mb-2 text-blue-500">
             {position === 1 ? 'VICTORY!' : 'RACE COMPLETE'}
           </h2>
           
@@ -181,23 +181,23 @@ const RaceResults: React.FC<RaceResultsProps> = ({
               <div className="text-right font-bold">{formatTime(time)}</div>
               
               <div className="text-left text-gray-400">Coins Earned:</div>
-              <div className="text-right font-bold text-neon-yellow">+{coinsEarned} 💰</div>
+              <div className="text-right font-bold text-yellow-400">+{coinsEarned} 💰</div>
               
               <div className="text-left text-gray-400">XP Earned:</div>
-              <div className="text-right font-bold text-neon-green">+{xpEarned} ⭐</div>
+              <div className="text-right font-bold text-green-500">+{xpEarned} ⭐</div>
             </div>
           </div>
           
           <div className="space-y-4 mt-6">
             <Button 
-              className="w-full bg-neon-blue text-black hover:bg-neon-green transition-colors duration-300" 
+              className="w-full bg-blue-500 text-black hover:bg-green-500 transition-colors duration-300" 
               onClick={onRestart}
             >
               RACE AGAIN
             </Button>
             
             <Button 
-              className="w-full bg-neon-pink text-black hover:bg-neon-blue transition-colors duration-300" 
+              className="w-full bg-pink-500 text-black hover:bg-blue-500 transition-colors duration-300" 
               onClick={onExit}
             >
               BACK TO MENU
@@ -351,13 +351,13 @@ const GameUI: React.FC<GameUIProps> = ({
   if (!isGameStarted) {
     return (
       <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-80">
-        <Card className="w-96 p-8 bg-black border border-neon-blue text-white">
+        <Card className="w-96 p-8 bg-black border border-blue-500 text-white">
           <div className="text-center">
-            <h1 className="text-4xl font-bold mb-6 text-neon-blue neon-text">VELOCITY RUSH</h1>
+            <h1 className="text-4xl font-bold mb-6 text-blue-500">VELOCITY RUSH</h1>
             <p className="mb-4 text-gray-300">Get ready for the ultimate racing experience!</p>
             
             <div className="mb-6 p-4 bg-black/50 rounded-lg">
-              <h3 className="text-xl font-bold text-neon-green mb-2">{environment.name}</h3>
+              <h3 className="text-xl font-bold text-green-500 mb-2">{environment.name}</h3>
               <p className="text-sm text-gray-400 mb-2">{environment.description}</p>
               <div className="flex justify-between text-xs text-gray-300">
                 <span>Weather: {environment.weather}</span>
@@ -367,7 +367,7 @@ const GameUI: React.FC<GameUIProps> = ({
             
             <div className="space-y-4">
               <Button 
-                className="w-full py-6 text-xl bg-neon-blue text-black hover:bg-neon-pink transition-colors duration-300 neon-border" 
+                className="w-full py-6 text-xl bg-blue-500 text-black hover:bg-pink-500 transition-colors duration-300" 
                 onClick={onStart}
               >
                 START RACE
@@ -463,7 +463,7 @@ const GameUI: React.FC<GameUIProps> = ({
       <div className="absolute top-4 left-4 right-4 flex justify-between items-center">
         {/* Speed display with digital speedometer */}
         <div className="bg-black/70 p-4 rounded-lg backdrop-blur-sm">
-          <div className="text-4xl font-bold text-neon-blue">
+          <div className="text-4xl font-bold text-blue-500">
             {Math.floor(speed * 3.6)}
             <span className="text-sm ml-1">KM/H</span>
           </div>
@@ -491,7 +491,7 @@ const GameUI: React.FC<GameUIProps> = ({
       <div className="absolute bottom-8 left-8 w-64">
         <div className="relative h-4 bg-black/50 rounded-full overflow-hidden">
           <div 
-            className="absolute h-full bg-gradient-to-r from-neon-blue to-neon-pink transition-all duration-200"
+            className="absolute h-full bg-gradient-to-r from-blue-500 to-pink-500 transition-all duration-200"
             style={{ width: `${nitroAmount}%` }}
           />
           <div className="absolute inset-0 flex items-center justify-center text-xs font-bold text-white">
